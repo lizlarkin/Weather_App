@@ -1,7 +1,7 @@
 $(document).ready(function () {
 
 // Fetch Open Weather Map API
-var requestUrl = 'https://api.openweathermap.org/data/2.5/weather?q=San Francisco&units=imperial&appid=f47cf665982ed682ac53eda751512847'
+var requestUrl = 'https://api.openweathermap.org/data/2.5/weather?q=Flin Flon&units=imperial&appid=f47cf665982ed682ac53eda751512847'
 
 function getApi(requestUrl) {
     fetch(requestUrl)
@@ -16,16 +16,20 @@ function getApi(requestUrl) {
         // add date
         var currentHumid = data.main.humidity;        
         var weatherIconCode = data.weather[0].icon;
-        var weatherIcon = "http://openweathermap.org/img/w/" +  weatherIconCode + ".png";
+        var weatherIconUrl = "http://openweathermap.org/img/wn/" +  weatherIconCode + "@2x.png";
         var currentWind = data.wind.speed;
-
+  
         // Input Data into current-weather div
 
         // City Name, Date, and Weather Icon
         cityInfoEl = document.createElement('h2');
         $("#current-weather").append(cityInfoEl);
-        cityInfoEl.textContent = "set city name somehow" + " date " + weatherIcon;
+        cityInfoEl.textContent = "set city name somehow" + " date " 
 
+        weatherIconEl = document.createElement('img');
+        weatherIconEl.setAttribute('src', weatherIconUrl);
+        cityInfoEl.append(weatherIconEl);
+        
         // Display city temperature
         currentTempEl = document.createElement('div');
         $("#current-weather").append(currentTempEl);
