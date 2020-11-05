@@ -1,13 +1,16 @@
 $(document).ready(function () {
 
 // Fetch Open Weather Map API
-var requestUrl = 'https://api.openweathermap.org/data/2.5/weather?q=Flin Flon&units=imperial&appid=f47cf665982ed682ac53eda751512847'
+var requestWeatherUrl = 'https://api.openweathermap.org/data/2.5/weather?q=Flin Flon&units=imperial&appid=f47cf665982ed682ac53eda751512847'
+var requestUVUrl = 'http://api.openweathermap.org/data/2.5/uvi?lat=37.7749&lon=122.4194&appid=f47cf665982ed682ac53eda751512847'
+var requestForecastUrl = 'https://api.openweathermap.org/data/2.5/forecast?q=San Francisco&units=imperial&cnt=6&appid=f47cf665982ed682ac53eda751512847'
 
-function getApi(requestUrl) {
-    fetch(requestUrl)
+function getApi(requestWeatherUrl) {
+    fetch(requestWeatherUrl)
       .then(function (response) {
-          return response.json()
           console.log(response.status);
+          return response.json()
+          
       })
       .then(function (data) {
         console.log(data);
@@ -24,7 +27,7 @@ function getApi(requestUrl) {
         // City Name, Date, and Weather Icon
         cityInfoEl = document.createElement('h2');
         $("#current-weather").append(cityInfoEl);
-        cityInfoEl.textContent = "set city name somehow" + " date " 
+        cityInfoEl.textContent = ("set city name somehow" + "date")
 
         weatherIconEl = document.createElement('img');
         weatherIconEl.setAttribute('src', weatherIconUrl);
@@ -55,9 +58,35 @@ function getApi(requestUrl) {
       
   }
   
-  
- 
-getApi(requestUrl);
+  function getUVApi(requestUVUrl) {
+    fetch(requestUVUrl)
+      .then(function (response) {
+          console.log(response.status);
+          return response.json()
+          
+      })
+      .then(function (data) {
+        console.log(data);
+        var date = data.date_iso.split("T")[0];
+        console.log(date);
+      })
+    }
+
+    function getForecastApi(requestForecastUrl) {
+      fetch(requestForecastUrl)
+        .then(function (response) {
+            console.log(response.status);
+            return response.json()
+            
+        })
+        .then(function (data) {
+          console.log(data);
+        })
+      }
+
+getApi(requestWeatherUrl);
+getUVApi(requestUVUrl);
+getForecastApi(requestForecastUrl)
 
 // Set starting key number for local storage
 var keynum = localStorage.length + 1;

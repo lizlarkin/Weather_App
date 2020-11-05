@@ -26,3 +26,8 @@ h1 {
     background-color: white;
     margin-bottom: 5px;
 }
+
+.save-searched-city:hover {
+    background-color: #2980b9;
+    color: white;
+}
