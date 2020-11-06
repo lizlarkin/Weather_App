@@ -31,3 +31,27 @@ h1 {
     background-color: #2980b9;
     color: white;
 }
+
+/* UV Index Class Properties */
+
+.low {
+    background-color: green;
+}
+
+.moderate {
+    background-color: orange;
+}
+
+.high {
+    background-color: red;
+}
+
+/* UV Index Shared Properties */
+#uv-span {
+    border-radius: 5px;
+    font-weight: bold;
+    color: white;
+    width: 75px;
+    float: right;
+}
+

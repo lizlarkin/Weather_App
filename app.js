@@ -13,7 +13,7 @@ function getApi(requestWeatherUrl) {
       })
       .then(function (data) {
         console.log(data);
-        // Collect weather data that will be used in app
+        // Collect weather data from API that will be used in app
         var currentTemp = data.list[0].main.temp;
         var date = data.list[0].dt_txt.split(" ")[0];
         var currentHumid = data.list[0].main.humidity;        
@@ -51,14 +51,19 @@ function getApi(requestWeatherUrl) {
         $("#current-weather").append(currentWindEl);
         currentWindEl.textContent = (`Wind Speed: ${currentWind} MPH`);
 
-        // Display UV Index
-        currentUVEl = document.createElement('div');
-        $("#current-weather").append(currentUVEl);
-        currentUVEl.textContent = (`UV Index: `);
 
-        
+
+
+        // Use loop to extract weather data from API
+        for (let i = 0; i < data.list.length; i++) {
+          var temp = (data.list[i].main.temp);
+          var humidity = data.list[i].main.humidity;
+          // var code = data.list[i].weather[i].icon;
+          var wind = data.list[i].wind.speed;
+          console.log(`Temp: ${i} ${temp}`);
+        }
+
       });
-      
   }
   
   function getUVApi(requestUVUrl) {
@@ -70,6 +75,25 @@ function getApi(requestWeatherUrl) {
       })
       .then(function (data) {
         console.log(data);
+        // Display UV Index
+        var currentUV = data.value;
+        currentUVEl = document.createElement('div');
+        $("#current-weather").append(currentUVEl);
+        currentUVEl.textContent = ("UV Index: ");
+
+        currentUVSpanEl = document.createElement('span');
+        currentUVEl.append(currentUVSpanEl);
+        currentUVSpanEl.textContent = currentUV;
+        currentUVSpanEl.setAttribute("id", "uv-span");
+
+        // Change color of UV Index number to visually indicate UV level
+         if (currentUV <= 2) {
+          currentUVSpanEl.setAttribute("class", "low");
+         } else if (currentUV <= 7) {
+          currentUVSpanEl.setAttribute("class", "moderate");
+         } else {
+         currentUVSpanEl.setAttribute("class", "high");
+        }
       })
     }
 
@@ -99,15 +123,15 @@ $("#search-button").on("click", function() {
 
   })
 
+    // TO DO
+
     // Check that city searched can be found
 
-    // Push weather data to current-weather div
-
+    // Deal with API connection errors
 
     // Push 5-day forecast to forecast-weather div
 
-  // icons come from open weather API
+    // UV Index location bug
 
-  // UV index color (green if favorable, etc.)
 
 });
