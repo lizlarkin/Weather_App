@@ -48,10 +48,11 @@ h1 {
 
 /* UV Index Shared Properties */
 #uv-span {
-    border-radius: 5px;
+    border-radius: 10px;
     font-weight: bold;
     color: white;
-    width: 75px;
-    float: right;
+    padding: 7px 20px 7px 20px;
+    text-align: center;
+    margin-left: 5px;
 }
 
