@@ -2,7 +2,6 @@ $(document).ready(function () {
 
 // Fetch Open Weather Map API
 var requestWeatherUrl = 'https://api.openweathermap.org/data/2.5/forecast?q=San Francisco&units=imperial&cnt=6&appid=f47cf665982ed682ac53eda751512847'
-var requestUVUrl = 'http://api.openweathermap.org/data/2.5/uvi?lat=37.7749&lon=122.4194&appid=f47cf665982ed682ac53eda751512847'
 
 function getApi(requestWeatherUrl) {
     fetch(requestWeatherUrl)
@@ -51,9 +50,6 @@ function getApi(requestWeatherUrl) {
         $("#current-weather").append(currentWindEl);
         currentWindEl.textContent = (`Wind Speed: ${currentWind} MPH`);
 
-
-
-
         // Use loop to extract weather data from API
         for (let i = 0; i < data.list.length; i++) {
           var temp = (data.list[i].main.temp);
@@ -63,43 +59,47 @@ function getApi(requestWeatherUrl) {
           console.log(`Temp: ${i} ${temp}`);
         }
 
+        // UV Index
+        var requestUVUrl = 'http://api.openweathermap.org/data/2.5/uvi?lat=' + latitude +'&lon=' + longitude + '&appid=f47cf665982ed682ac53eda751512847'
+        console.log(requestUVUrl);
+        function getUVApi(requestUVUrl) {
+          fetch(requestUVUrl)
+            .then(function (response) {
+                console.log(response.status);
+                return response.json()
+                
+            })
+            .then(function (data) {
+              console.log(data);
+              // Display UV Index
+              var currentUV = data.value;
+              currentUVEl = document.createElement('div');
+              $("#current-weather").append(currentUVEl);
+              currentUVEl.textContent = ("UV Index: ");
+      
+              currentUVSpanEl = document.createElement('span');
+              currentUVEl.append(currentUVSpanEl);
+              currentUVSpanEl.textContent = currentUV;
+              currentUVSpanEl.setAttribute("id", "uv-span");
+      
+              // Change color of UV Index number to visually indicate UV level
+               if (currentUV <= 2) {
+                currentUVSpanEl.setAttribute("class", "low");
+               } else if (currentUV <= 7) {
+                currentUVSpanEl.setAttribute("class", "moderate");
+               } else {
+               currentUVSpanEl.setAttribute("class", "high");
+              }
+            })
+          } getUVApi(requestUVUrl);
+      
       });
   }
   
-  function getUVApi(requestUVUrl) {
-    fetch(requestUVUrl)
-      .then(function (response) {
-          console.log(response.status);
-          return response.json()
-          
-      })
-      .then(function (data) {
-        console.log(data);
-        // Display UV Index
-        var currentUV = data.value;
-        currentUVEl = document.createElement('div');
-        $("#current-weather").append(currentUVEl);
-        currentUVEl.textContent = ("UV Index: ");
-
-        currentUVSpanEl = document.createElement('span');
-        currentUVEl.append(currentUVSpanEl);
-        currentUVSpanEl.textContent = currentUV;
-        currentUVSpanEl.setAttribute("id", "uv-span");
-
-        // Change color of UV Index number to visually indicate UV level
-         if (currentUV <= 2) {
-          currentUVSpanEl.setAttribute("class", "low");
-         } else if (currentUV <= 7) {
-          currentUVSpanEl.setAttribute("class", "moderate");
-         } else {
-         currentUVSpanEl.setAttribute("class", "high");
-        }
-      })
-    }
-
+  
 
 getApi(requestWeatherUrl);
-getUVApi(requestUVUrl);
+
 
 // Set starting key number for local storage
 var keynum = localStorage.length + 1;
