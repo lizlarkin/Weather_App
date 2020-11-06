@@ -52,16 +52,28 @@ function getApi(requestWeatherUrl) {
           var date = data.list[i].dt_txt.split(" ")[0];
           var code = data.list[i].weather[0].icon; 
           var codeUrl = "http://openweathermap.org/img/wn/" + code + "@2x.png";
-          console.log(codeUrl);
           var temp = (data.list[i].main.temp);
           var humidity = data.list[i].main.humidity;
-          var forecastData = (`${date} ${codeUrl} \n ${temp}\u00B0F \n ${humidity}% `);
 
         // Append forecasts to forecast-weather div
         forecastWeatherEl = document.createElement('div');
         forecastWeatherEl.setAttribute("class", "forecast-card")
         $("#forecast-weather").append(forecastWeatherEl);
-        forecastWeatherEl.textContent = forecastData;
+        
+        forecastDateEl = document.createElement('h4');
+        forecastWeatherEl.append(forecastDateEl);
+        forecastDateEl.textContent = date;
+        forecastImg = document.createElement('img');
+        forecastImg.setAttribute("src", codeUrl);
+        forecastDateEl.append(forecastImg);
+        
+        forecastTempEl = document.createElement('p');
+        forecastWeatherEl.append(forecastTempEl);
+        forecastTempEl.textContent = "Temp: " + temp + "\u00B0F";
+        
+        forecastHumidityEl = document.createElement('p');
+        forecastWeatherEl.append(forecastHumidityEl);
+        forecastHumidityEl.textContent = "Humidity: " + humidity +"%";
 
         }
 
@@ -128,13 +140,13 @@ $("#search-button").on("click", function() {
 
     // TO DO
 
+    // Fix forecast date
+
+    // Remove hard-coded location from URL and connect to click event
+
     // Check that city searched can be found
 
     // Deal with API connection errors
-
-    // Push 5-day forecast to forecast-weather div
-
-    // UV Index location bug
 
 
 });
