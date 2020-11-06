@@ -7,29 +7,26 @@ function getApi(requestWeatherUrl) {
     fetch(requestWeatherUrl)
       .then(function (response) {
           console.log(response.status);
-          return response.json()
+          return response.json();
           
       })
       .then(function (data) {
         console.log(data);
         // Collect weather data from API that will be used in app
         var currentTemp = data.list[0].main.temp;
-        var date = data.list[0].dt_txt.split(" ")[0];
+        var today = data.list[0].dt_txt.split(" ")[0];
         var currentHumid = data.list[0].main.humidity;        
         var weatherIconCode = data.list[0].weather[0].icon;
-        var weatherIconUrl = "http://openweathermap.org/img/wn/" +  weatherIconCode + "@2x.png";
+        var weatherIconUrl = "http://openweathermap.org/img/wn/" + weatherIconCode + "@2x.png";
         var currentWind = data.list[0].wind.speed;
         var latitude = data.city.coord.lat;
-        console.log(latitude); // add this to requestUVUrl and remove
         var longitude = data.city.coord.lon;
-        console.log(longitude); // add this to requestUVUrl and remove
   
-        // Input Data into current-weather div
-
+        // Input Data into current-weather divs
         // City Name, Date, and Weather Icon
         cityInfoEl = document.createElement('h2');
         $("#current-weather").append(cityInfoEl);
-        cityInfoEl.textContent = ("set city name somehow " + "(" + date + ")")
+        cityInfoEl.textContent = ("set city name here " + "(" + today + ")")
 
         weatherIconEl = document.createElement('img');
         weatherIconEl.setAttribute('src', weatherIconUrl);
@@ -50,13 +47,22 @@ function getApi(requestWeatherUrl) {
         $("#current-weather").append(currentWindEl);
         currentWindEl.textContent = (`Wind Speed: ${currentWind} MPH`);
 
-        // Use loop to extract weather data from API
-        for (let i = 0; i < data.list.length; i++) {
+        // Use loop to extract 50day forecast data from API
+        for (let i = 1; i < data.list.length; i++) {
+          var date = data.list[i].dt_txt.split(" ")[0];
+          var code = data.list[i].weather[0].icon; 
+          var codeUrl = "http://openweathermap.org/img/wn/" + code + "@2x.png";
+          console.log(codeUrl);
           var temp = (data.list[i].main.temp);
           var humidity = data.list[i].main.humidity;
-          // var code = data.list[i].weather[i].icon;
-          var wind = data.list[i].wind.speed;
-          console.log(`Temp: ${i} ${temp}`);
+          var forecastData = (`${date} ${codeUrl} \n ${temp}\u00B0F \n ${humidity}% `);
+
+        // Append forecasts to forecast-weather div
+        forecastWeatherEl = document.createElement('div');
+        forecastWeatherEl.setAttribute("class", "forecast-card")
+        $("#forecast-weather").append(forecastWeatherEl);
+        forecastWeatherEl.textContent = forecastData;
+
         }
 
         // UV Index
@@ -96,10 +102,7 @@ function getApi(requestWeatherUrl) {
       });
   }
   
-  
-
 getApi(requestWeatherUrl);
-
 
 // Set starting key number for local storage
 var keynum = localStorage.length + 1;

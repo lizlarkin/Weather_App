@@ -56,3 +56,11 @@ h1 {
     margin-left: 5px;
 }
 
+/* Forecast Card Style */
+.forecast-card {
+    float: left;
+    width: 175px;
+    margin-right: 10px;
+    background-color: #2980b9;
+    color: white;
+}
