@@ -140,14 +140,15 @@ function getApi(requestWeatherUrl) {
 getApi(requestWeatherUrl);
 
 // Click saved city function
-$('.save-searched-city').on("click", function() {
+$(document).on("click", '.save-searched-city', function() {
   var getButtonCity = $(this).text();
+  console.log(getButtonCity)
   var requestWeatherUrl = 'https://api.openweathermap.org/data/2.5/forecast?q=' + getButtonCity + '&units=imperial&appid=f47cf665982ed682ac53eda751512847'
   
   $("#current-weather").empty();
   $("#forecast-weather").empty();
-  
 
+  getApi(requestWeatherUrl);  
 })
 
 
@@ -155,9 +156,7 @@ $('.save-searched-city').on("click", function() {
 
     // TO DO
 
-    // Fix forecast date
-
-    // Clear forecast data with each new click
+    // Check that first forecast date is tomorrow vs today
 
     // Change forecast on click of saved cities
 
