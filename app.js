@@ -3,9 +3,11 @@ $(document).ready(function () {
   // Set starting key number for local storage
 var keynum = localStorage.length + 1;
 
+var city;
+
 // Search Button
 $("#search-button").on("click", function() {
-    var city = $("#city-input").val();
+    city = $("#city-input").val();
     localStorage.setItem(keynum, city);
     $("#city-input").val("")
     // increment key number each time button is clicked
@@ -26,8 +28,12 @@ function getApi(requestWeatherUrl) {
     fetch(requestWeatherUrl)
       .then(function (response) {
           console.log(response.status);
+          if (response.ok) {
           return response.json();
-          
+        } else {
+            alert("Please try search again.")
+          return;
+        }
       })
 
       .then(function (data) {
@@ -133,7 +139,6 @@ function getApi(requestWeatherUrl) {
               }
             })
           } getUVApi(requestUVUrl);
-      
       });
   }
   
@@ -142,11 +147,11 @@ getApi(requestWeatherUrl);
 // Click saved city function
 $(document).on("click", '.save-searched-city', function() {
   var getButtonCity = $(this).text();
-  console.log(getButtonCity)
   var requestWeatherUrl = 'https://api.openweathermap.org/data/2.5/forecast?q=' + getButtonCity + '&units=imperial&appid=f47cf665982ed682ac53eda751512847'
-  
+  city = getButtonCity;
   $("#current-weather").empty();
   $("#forecast-weather").empty();
+  $("#uv-span").empty();
 
   getApi(requestWeatherUrl);  
 })
@@ -158,7 +163,7 @@ $(document).on("click", '.save-searched-city', function() {
 
     // Check that first forecast date is tomorrow vs today
 
-    // Change forecast on click of saved cities
+    // Fix double UV
 
     // Check that city searched can be found
 
