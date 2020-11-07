@@ -1,7 +1,26 @@
 $(document).ready(function () {
 
+  // Set starting key number for local storage
+var keynum = localStorage.length + 1;
+
+// Search Button
+$("#search-button").on("click", function() {
+    var city = $("#city-input").val();
+    localStorage.setItem(keynum, city);
+    $("#city-input").val("")
+    // increment key number each time button is clicked
+    keynum = keynum + 1;
+
+    // Save search to page 
+    var cityDiv = document.createElement('div');
+    var cityName = document.createElement('button');
+    cityName.textContent = city;
+    $("#data-searched-cities").append(cityDiv);
+    cityDiv.append(cityName); 
+    cityName.setAttribute("class", "save-searched-city");
+
 // Fetch Open Weather Map API
-var requestWeatherUrl = 'https://api.openweathermap.org/data/2.5/forecast?q=San Francisco&units=imperial&cnt=6&appid=f47cf665982ed682ac53eda751512847'
+var requestWeatherUrl = 'https://api.openweathermap.org/data/2.5/forecast?q=' + city + '&units=imperial&appid=f47cf665982ed682ac53eda751512847'
 
 function getApi(requestWeatherUrl) {
     fetch(requestWeatherUrl)
@@ -10,7 +29,11 @@ function getApi(requestWeatherUrl) {
           return response.json();
           
       })
+
       .then(function (data) {
+
+        $("#current-weather").empty();
+        $("#forecast-weather").empty();
         console.log(data);
         // Collect weather data from API that will be used in app
         var currentTemp = data.list[0].main.temp;
@@ -26,7 +49,7 @@ function getApi(requestWeatherUrl) {
         // City Name, Date, and Weather Icon
         cityInfoEl = document.createElement('h2');
         $("#current-weather").append(cityInfoEl);
-        cityInfoEl.textContent = ("set city name here " + "(" + today + ")")
+        cityInfoEl.textContent = (city + " (" + today + ")")
 
         weatherIconEl = document.createElement('img');
         weatherIconEl.setAttribute('src', weatherIconUrl);
@@ -48,7 +71,8 @@ function getApi(requestWeatherUrl) {
         currentWindEl.textContent = (`Wind Speed: ${currentWind} MPH`);
 
         // Use loop to extract 50day forecast data from API
-        for (let i = 1; i < data.list.length; i++) {
+        for (let i = 0; i < data.list.length; i++) {
+           if (data.list[i].dt_txt.indexOf("15:00:00") !== -1) { //find index of 15, if it's not there then end for loop and go to next
           var date = data.list[i].dt_txt.split(" ")[0];
           var code = data.list[i].weather[0].icon; 
           var codeUrl = "http://openweathermap.org/img/wn/" + code + "@2x.png";
@@ -76,10 +100,9 @@ function getApi(requestWeatherUrl) {
         forecastHumidityEl.textContent = "Humidity: " + humidity +"%";
 
         }
-
+      }
         // UV Index
         var requestUVUrl = 'http://api.openweathermap.org/data/2.5/uvi?lat=' + latitude +'&lon=' + longitude + '&appid=f47cf665982ed682ac53eda751512847'
-        console.log(requestUVUrl);
         function getUVApi(requestUVUrl) {
           fetch(requestUVUrl)
             .then(function (response) {
@@ -116,25 +139,17 @@ function getApi(requestWeatherUrl) {
   
 getApi(requestWeatherUrl);
 
-// Set starting key number for local storage
-var keynum = localStorage.length + 1;
+// Click saved city function
+$('.save-searched-city').on("click", function() {
+  var getButtonCity = $(this).text();
+  var requestWeatherUrl = 'https://api.openweathermap.org/data/2.5/forecast?q=' + getButtonCity + '&units=imperial&appid=f47cf665982ed682ac53eda751512847'
+  
+  $("#current-weather").empty();
+  $("#forecast-weather").empty();
+  
 
-// Search Button
-$("#search-button").on("click", function() {
-    var city = $("#city-input").val();
-    console.log(city);
-    localStorage.setItem(keynum, city);
-    // increment key number each time button is clicked
-    keynum = keynum + 1;
+})
 
-    // Save search to page (why does this work when I'm not retrieving from LS???)
-    // Change this to get from local storage so it's there when pg refreshed
-    var cityDiv = document.createElement('div');
-    var cityName = document.createElement('button');
-    cityName.textContent = city;
-    $("#data-searched-cities").append(cityDiv);
-    cityDiv.append(cityName); 
-    cityName.setAttribute("class", "save-searched-city");
 
   })
 
@@ -142,7 +157,9 @@ $("#search-button").on("click", function() {
 
     // Fix forecast date
 
-    // Remove hard-coded location from URL and connect to click event
+    // Clear forecast data with each new click
+
+    // Change forecast on click of saved cities
 
     // Check that city searched can be found
 
