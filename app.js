@@ -43,7 +43,7 @@ function getApi(requestWeatherUrl) {
         console.log(data);
         // Collect weather data from API that will be used in app
         var currentTemp = data.list[0].main.temp;
-        var today = data.list[0].dt_txt.split(" ")[0];
+        var today = new Date().toLocaleDateString();
         var currentHumid = data.list[0].main.humidity;        
         var weatherIconCode = data.list[0].weather[0].icon;
         var weatherIconUrl = "http://openweathermap.org/img/wn/" + weatherIconCode + "@2x.png";
@@ -156,18 +156,6 @@ $(document).on("click", '.save-searched-city', function() {
   getApi(requestWeatherUrl);  
 })
 
-
-  })
-
-    // TO DO
-
-    // Check that first forecast date is tomorrow vs today
-
-    // Fix double UV
-
-    // Check that city searched can be found
-
-    // Deal with API connection errors
-
+})
 
 });
