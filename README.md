@@ -22,3 +22,4 @@ from above description), the page displays the city data twice on top of itself.
 Link to the deployed page:https://lizlarkin.github.io/Weather_App/weather.html
 
 Screenshot: 
+<img src="Weather_Screenshot.png">
