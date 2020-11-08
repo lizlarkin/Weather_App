@@ -11,6 +11,14 @@ generating HTML and dynamically styling through Javascript.
 
 Languages/tools utilized include HTML, CSS, Bootstrap, Javascipt, and JQuery.
 
-Link to the deployed page:
+Issues to return to: 
+1) The forecast data from Open Weather API does not include today's date. I might need another API 
+call to the weather API (vs forecast API). I was able to successfully build and incorporate this
+functionality, but I removed it because of the below issue.
+2) The click event associated with the search city buttons re-runs the function in which the data
+is collected and pushed to the screen. When the function re-runs with the weather API (if incorporated
+from above description), the page displays the city data twice on top of itself. 
+
+Link to the deployed page:https://lizlarkin.github.io/Weather_App/weather.html
 
 Screenshot: 
